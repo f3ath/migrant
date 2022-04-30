@@ -1,6 +1,6 @@
 name: migrant
 version: 0.0.1
-description: A simple SQL/NoSQL Datbase schema migration tool
+description: A simple SQL/NoSQL Database schema migration tool
 homepage: "https://github.com/f3ath/migrant"
 
 environment:
