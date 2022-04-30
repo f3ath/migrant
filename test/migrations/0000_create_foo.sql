@@ -1,0 +1,1 @@
+create table foo (id text not null);
