@@ -7,4 +7,10 @@ class Migration {
 
   /// The statement to execute.
   final String statement;
+
+  @override
+  bool operator ==(Object other) =>
+      other is Migration &&
+      other.version == version &&
+      other.statement == statement;
 }

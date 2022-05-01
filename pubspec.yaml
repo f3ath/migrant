@@ -1,5 +1,5 @@
 name: migrant
-version: 0.0.3
+version: 0.0.4
 description: A simple SQL/NoSQL Database schema migration tool
 homepage: "https://github.com/f3ath/migrant"
 
