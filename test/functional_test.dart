@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:migrant/migrant.dart';
+import 'package:migrant/testing.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -10,11 +11,11 @@ void main() {
     await database.migrate(LocalDirectory(
         Directory('test/migrations'), FileNameFormat(RegExp(r'\d{4}'))));
     expect(
-        gateway._log,
+        gateway.log,
         equals([
-          '0000:create foo:create table foo (id text not null);',
-          '0001:alter foo:alter table foo add column name text;',
-          '0002:drop foo:drop table foo;',
+          '0000:create table foo (id text not null);',
+          '0001:alter table foo add column name text;',
+          '0002:drop table foo;',
         ]));
     expect(await gateway.currentVersion(), equals('0002'));
   });
@@ -25,10 +26,10 @@ void main() {
     await database.migrate(LocalDirectory(
         Directory('test/migrations'), FileNameFormat(RegExp(r'\d{4}'))));
     expect(
-        gateway._log,
+        gateway.log,
         equals([
-          '0001:alter foo:alter table foo add column name text;',
-          '0002:drop foo:drop table foo;',
+          '0001:alter table foo add column name text;',
+          '0002:drop table foo;',
         ]));
     expect(await gateway.currentVersion(), equals('0002'));
   });
@@ -64,7 +65,7 @@ class LocalDirectory extends MigrationSource {
         .whereType<MatchedFile>()
         .where((matchedFile) =>
             afterVersion == null ||
-            matchedFile.match.isGreaterThan(afterVersion))
+            matchedFile.version.compareTo(afterVersion) > 0)
         .toList();
     matchedFiles.sort();
 
@@ -75,20 +76,17 @@ class LocalDirectory extends MigrationSource {
 }
 
 class MatchedFile implements Comparable<MatchedFile> {
-  MatchedFile(this._file, this.match);
+  MatchedFile(this._file, this.version);
 
   final File _file;
 
-  final FileNameMatch match;
+  final String version;
 
   @override
-  int compareTo(MatchedFile other) => match.compareTo(other.match);
-
-  bool isVersionGreaterThan(String other) => match.isGreaterThan(other);
+  int compareTo(MatchedFile other) => version.compareTo(other.version);
 
   Future<Migration> toMigration() async =>
-      Migration(match.version, await _file.readAsString(),
-          summary: match.summary);
+      Migration(version, await _file.readAsString());
 }
 
 /// Defines the format of the file name.
@@ -102,61 +100,8 @@ class FileNameFormat {
 
   /// Matches the [name] against the format,
   /// returns a [FileNameMatch] if successful.
-  FileNameMatch? match(String name) {
+  String? match(String name) {
     if (!name.endsWith(_extension)) return null;
-    final version = _versionFormat.matchAsPrefix(name)?.group(0);
-    if (version == null) return null;
-    final start = version.length;
-    final end = name.length - _extension.length;
-    final summary = name.substring(start, end).replaceAll('_', ' ').trim();
-    return FileNameMatch(version, summary);
+    return _versionFormat.matchAsPrefix(name)?.group(0);
   }
-}
-
-/// A format match on a file name.
-class FileNameMatch implements Comparable<FileNameMatch> {
-  FileNameMatch(this.version, this.summary) {
-    if (version.isEmpty) throw ArgumentError('Version must not be empty');
-  }
-
-  /// Migration version.
-  final String version;
-
-  /// Migration summary.
-  final String summary;
-
-  @override
-  int compareTo(FileNameMatch other) => version.compareTo(other.version);
-
-  bool isGreaterThan(String other) => version.compareTo(other) > 0;
-}
-
-class TestGateway extends DatabaseGateway {
-  TestGateway({String? version = null}) {
-    _version = version;
-  }
-
-  String? _version;
-
-  @override
-  Future<String?> currentVersion() async => _version;
-
-  @override
-  Future<void> apply(Migration migration) async {
-    _version = migration.version;
-    _log.add(
-        '${migration.version}:${migration.summary}:${migration.statement}');
-  }
-
-  final _log = <String>[];
-}
-
-class TestMigrationSource implements MigrationSource {
-  TestMigrationSource(Iterable<Migration> migrations)
-      : _migrations = Stream.fromIterable(migrations);
-
-  final Stream<Migration> _migrations;
-
-  @override
-  Stream<Migration> read({String? afterVersion = null}) => _migrations;
 }
