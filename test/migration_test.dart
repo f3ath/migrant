@@ -9,4 +9,8 @@ void main() {
     expect(Migration('00', 'Hello'), isNot(equals(Migration('01', 'Hello'))));
     expect(Migration('00', 'Hello'), isNot(equals(Migration('01', 'World'))));
   });
+
+  test('Hash Code', () {
+    expect(Migration('00', 'Hello').hashCode, equals('00'.hashCode));
+  });
 }
