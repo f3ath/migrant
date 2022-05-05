@@ -1,3 +1,7 @@
+## [0.0.8] - 2022-05-05
+### Added
+- Example and a bit of docs
+
 ## [0.0.7] - 2022-05-04
 ### Changed
 - Moved InMemory source to testing
@@ -22,6 +26,7 @@
 ### Added
 - Initial version
 
+[0.0.8]: https://github.com/f3ath/migrant/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/f3ath/migrant/compare/0.0.6...0.0.7
 [0.0.6]: https://github.com/f3ath/migrant/compare/0.0.5...0.0.6
 [0.0.5]: https://github.com/f3ath/migrant/compare/0.0.4...0.0.5

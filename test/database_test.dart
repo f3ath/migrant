@@ -1,5 +1,4 @@
 import 'package:migrant/migrant.dart';
-import 'package:migrant/src/in_memory.dart';
 import 'package:migrant/testing.dart';
 import 'package:test/test.dart';
 
