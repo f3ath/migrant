@@ -7,4 +7,3 @@ abstract class MigrationSource {
   /// equal to it will be skipped.
   Stream<Migration> read({String? afterVersion});
 }
-
