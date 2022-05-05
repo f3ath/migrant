@@ -2,29 +2,39 @@ import 'migrant.dart';
 
 /// A testing gateway instance.
 class TestGateway extends DatabaseGateway {
-  TestGateway({this.version = null});
+  TestGateway({this.initialVersion});
 
-  String? version;
+  /// Initial DB version.
+  final String? initialVersion;
+
+  /// All the applied migrations.
+  final appliedMigrations = <Migration>[];
+
+  /// All applied migration versions.
+  List<String> get appliedVersions =>
+      appliedMigrations.map((e) => e.version).toList();
 
   @override
-  Future<String?> currentVersion() async => version;
+  Future<String?> currentVersion() async => appliedMigrations.isEmpty
+      ? initialVersion
+      : appliedMigrations.last.version;
 
   @override
   Future<void> apply(Migration migration) async {
-    version = migration.version;
-    log.add('${migration.version}:${migration.statement}');
+    appliedMigrations.add(migration);
   }
-
-  final log = <String>[];
 }
 
-/// A testing migration source.
-class TestMigrationSource implements MigrationSource {
-  TestMigrationSource(Iterable<Migration> migrations)
-      : _migrations = Stream.fromIterable(migrations);
+/// Unsorted dumb source which does not respect version order.
+/// Useful for testing error scenarios.
+class AsIs implements MigrationSource {
+  AsIs(this._migrations);
 
-  final Stream<Migration> _migrations;
+  final List<Migration> _migrations;
 
+  /// Returns the migrations as-is, regardless of the version order.
+  /// Ignores [afterVersion] argument.
   @override
-  Stream<Migration> read({String? afterVersion = null}) => _migrations;
+  Stream<Migration> read({String? afterVersion}) =>
+      Stream.fromIterable(_migrations);
 }

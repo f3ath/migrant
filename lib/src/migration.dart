@@ -13,4 +13,7 @@ class Migration {
       other is Migration &&
       other.version == version &&
       other.statement == statement;
+
+  @override
+  int get hashCode => version.hashCode;
 }

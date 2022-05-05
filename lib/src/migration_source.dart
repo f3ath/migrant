@@ -2,9 +2,9 @@ import 'package:migrant/src/migration.dart';
 
 /// A source of migration data.
 abstract class MigrationSource {
-  /// Returns all migrations sorted by version ascending.
-  ///
-  /// If [afterVersion] is provided, only the migrations with the versions
-  /// higher than [afterVersion] will be returned.
-  Stream<Migration> read({String? afterVersion = null});
+  /// Streams the migrations ordered by version, ascending.
+  /// If [afterVersion] is passed, all migrations with versions less or
+  /// equal to it will be skipped.
+  Stream<Migration> read({String? afterVersion});
 }
+

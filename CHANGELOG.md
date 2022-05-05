@@ -1,3 +1,7 @@
+## [0.0.6] - 2022-05-04
+### Changed
+- Naming
+
 ## [0.0.5] - 2022-04-30
 ### Changed
 - Filesystem migrations source moved to its own package
@@ -14,6 +18,7 @@
 ### Added
 - Initial version
 
+[0.0.6]: https://github.com/f3ath/migrant/compare/0.0.5...0.0.6
 [0.0.5]: https://github.com/f3ath/migrant/compare/0.0.4...0.0.5
 [0.0.4]: https://github.com/f3ath/migrant/compare/0.0.3...0.0.4
 [0.0.3]: https://github.com/f3ath/migrant/compare/0.0.2...0.0.3
