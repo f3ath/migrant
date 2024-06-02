@@ -16,6 +16,6 @@ class InMemory implements MigrationSource {
   @override
   Stream<Migration> read({String? afterVersion}) =>
       Stream.fromIterable(_migrations.where((migration) =>
-      afterVersion == null ||
+          afterVersion == null ||
           migration.version.compareTo(afterVersion) > 0));
 }
