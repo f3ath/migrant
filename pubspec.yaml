@@ -1,16 +1,16 @@
 name: migrant
-version: 0.0.8
-description: A simple database schema migration tool
+version: 0.0.9
+description: A simple database schema migration tool. Supports SQLite and PostgreSQL, can read migration scripts from multiple sources.
 homepage: "https://github.com/f3ath/migrant"
 
 environment:
-  sdk: '>=2.16.0 <3.0.0'
+  sdk: '>=3.4.0 <4.0.0'
 
 dev_dependencies:
-  lints: ^1.0.1
+  lints: ^4.0.0
   test: ^1.20.1
   check_coverage: ^0.0.4
-  cider: ^0.1.0
+  cider: ^0.2.7
   migrant_source_fs: ^0.0.2
   migrant_db_sqlite: ^0.0.1
   sqflite_common_ffi: ^2.1.1

@@ -18,10 +18,10 @@ class Database {
     }
   }
 
-  _enforceOrder(String prev, String next) {
-    if (prev.compareTo(next) >= 0) {
+  _enforceOrder(String current, String next) {
+    if (current.compareTo(next) >= 0) {
       throw StateError(
-          'Next migration version ($next) is lower than current ($prev)');
+          'Next migration version ($next) is lower than current ($current)');
     }
   }
 }

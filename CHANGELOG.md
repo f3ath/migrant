@@ -1,3 +1,7 @@
+## [0.0.9] - 2024-06-01
+### Changed
+- Dependencies bump
+
 ## [0.0.8] - 2022-05-05
 ### Added
 - Example and a bit of docs
@@ -26,6 +30,7 @@
 ### Added
 - Initial version
 
+[0.0.9]: https://github.com/f3ath/migrant/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/f3ath/migrant/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/f3ath/migrant/compare/0.0.6...0.0.7
 [0.0.6]: https://github.com/f3ath/migrant/compare/0.0.5...0.0.6

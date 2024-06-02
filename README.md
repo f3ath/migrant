@@ -18,7 +18,7 @@ import 'dart:io';
 import 'package:migrant/migrant.dart';
 import 'package:migrant_db_sqlite/migrant_db_sqlite.dart';
 import 'package:migrant_source_fs/migrant_source_fs.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart' hide Database;
 
 Future<void> main() async {
   // Migration files must start with 4 digits which define the version.
@@ -37,7 +37,7 @@ Future<void> main() async {
   }
 
   // This is where the database file is placed.
-  print("Database path:" + await databaseFactoryFfi.getDatabasesPath());
+  print("Database path:${await databaseFactoryFfi.getDatabasesPath()}");
 
   // The SQLite connection. We're using a local file.
   var connection = await databaseFactoryFfi.openDatabase('example.db');
@@ -82,4 +82,5 @@ class LoggingGatewayWrapper implements DatabaseGateway {
     return version;
   }
 }
+
 ```
