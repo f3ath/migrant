@@ -3,7 +3,7 @@ import 'package:migrant/testing.dart';
 import 'package:test/test.dart';
 
 Future<void> main() async {
-  final source = InMemory({
+  final source = InMemory.fromMap({
     '01': 'Version 01',
     '02': 'Version 02',
     '03': 'Version 03',
