@@ -1,1 +1,0 @@
-alter table test add column bar text;
