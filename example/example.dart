@@ -54,7 +54,7 @@ class LoggingGatewayWrapper implements DatabaseGateway {
   final DatabaseGateway gateway;
 
   @override
-  Future<void> apply(Migration migration) async {
+  Future<void> apply(Migration migration, {String? assertCurrentVersion}) async {
     print('Applying version ${migration.version}...');
     await gateway.apply(migration);
     print('Version ${migration.version} has been applied.');

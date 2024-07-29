@@ -1,3 +1,9 @@
+## [0.1.0] - 2024-07-28
+### Changed
+- Database.migrate() now allows to be safely retried after a failure
+- InMemory source API change
+- DatabaseGateway.apply() API change
+
 ## [0.0.9] - 2024-06-01
 ### Changed
 - Dependencies bump
@@ -30,6 +36,7 @@
 ### Added
 - Initial version
 
+[0.1.0]: https://github.com/f3ath/migrant/compare/0.0.9...0.1.0
 [0.0.9]: https://github.com/f3ath/migrant/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/f3ath/migrant/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/f3ath/migrant/compare/0.0.6...0.0.7

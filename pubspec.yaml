@@ -1,5 +1,5 @@
 name: migrant
-version: 0.0.9
+version: 0.1.0
 description: A simple database schema migration tool. Supports SQLite and PostgreSQL, can read migration scripts from multiple sources.
 homepage: "https://github.com/f3ath/migrant"
 

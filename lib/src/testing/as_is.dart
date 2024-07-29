@@ -6,7 +6,7 @@ import 'package:migrant/src/migration_source.dart';
 class AsIs implements MigrationSource {
   AsIs(this._migrations);
 
-  final List<Migration> _migrations;
+  final Iterable<Migration> _migrations;
 
   /// Returns the migrations as-is, regardless of the version order.
   /// Ignores [afterVersion] argument.

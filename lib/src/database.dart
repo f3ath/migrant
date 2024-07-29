@@ -9,19 +9,21 @@ class Database {
 
   /// Applies the migrations from the [source].
   Future<void> migrate(MigrationSource source) async {
-    String? current = await _gateway.currentVersion();
-    await for (final migration in source.read(afterVersion: current)) {
-      final next = migration.version;
-      if (current != null) _enforceOrder(current, next);
-      await _gateway.apply(migration);
-      current = next;
+    while (true) {
+      final current = await _gateway.currentVersion();
+      final migrationsToApply = source.read(afterVersion: current);
+      if (await migrationsToApply.isEmpty) break;
+      final migration = await migrationsToApply.first;
+      migration.version.mustBeHigherThan(current);
+      await _gateway.apply(migration, assertCurrentVersion: current);
     }
   }
+}
 
-  _enforceOrder(String current, String next) {
-    if (current.compareTo(next) >= 0) {
-      throw StateError(
-          'Next migration version ($next) is lower than current ($current)');
+extension on String {
+  mustBeHigherThan(String? other) {
+    if (other != null && compareTo(other) <= 0) {
+      throw StateError('Version "$this" must be higher than "$other"');
     }
   }
 }
