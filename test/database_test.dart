@@ -3,11 +3,11 @@ import 'package:migrant/testing.dart';
 import 'package:test/test.dart';
 
 Future<void> main() async {
-  final source = InMemory.fromMap({
-    '01': 'Version 01',
-    '02': 'Version 02',
-    '03': 'Version 03',
-  });
+  final source = InMemory([
+    Migration('01', 'Version 01'),
+    Migration('02', 'Version 02'),
+    Migration('03', 'Version 03'),
+  ]);
 
   test('All migrations applied', () async {
     final gateway = TestGateway();
@@ -30,10 +30,9 @@ Future<void> main() async {
   test('Throws when migrations come out of order', () async {
     final database = Database(TestGateway());
     expect(() async {
-      await database.migrate(AsIs([
-        Migration('2', ''),
-        Migration('1', ''),
-      ]));
+      await database.migrate(MockSource(
+          first: Migration('02', 'Version 02'),
+          next: Migration('01', 'Version 01')));
     }, throwsStateError);
   });
 }

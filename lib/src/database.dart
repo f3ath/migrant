@@ -1,5 +1,4 @@
-import 'package:migrant/src/database_gateway.dart';
-import 'package:migrant/src/migration_source.dart';
+import 'package:migrant/migrant.dart';
 
 /// The database wrapper which performs the migration.
 class Database {
@@ -10,19 +9,24 @@ class Database {
   /// Applies the migrations from the [source].
   Future<void> migrate(MigrationSource source) async {
     while (true) {
-      final current = await _gateway.currentVersion();
-      final migrationsToApply = source.read(afterVersion: current);
-      if (await migrationsToApply.isEmpty) break;
-      final migration = await migrationsToApply.first;
-      migration.version.mustBeHigherThan(current);
-      await _gateway.apply(migration, assertCurrentVersion: current);
+      final currentVersion = await _gateway.currentVersion();
+      if (currentVersion != null) {
+        final migration = await source.getNext(currentVersion);
+        if (migration == null) break;
+        migration.version.assertHigherThan(currentVersion);
+        await _gateway.upgrade(migration, currentVersion);
+      } else {
+        final migration = await source.getFirst();
+        if (migration == null) break;
+        await _gateway.apply(migration);
+      }
     }
   }
 }
 
 extension on String {
-  mustBeHigherThan(String? other) {
-    if (other != null && compareTo(other) <= 0) {
+  assertHigherThan(String other) {
+    if (compareTo(other) <= 0) {
       throw StateError('Version "$this" must be higher than "$other"');
     }
   }

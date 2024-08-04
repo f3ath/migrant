@@ -1,16 +1,15 @@
 import 'package:migrant/src/migration.dart';
 import 'package:migrant/src/migration_source.dart';
 
-/// Unsorted dumb source which does not respect version order.
-/// Useful for testing error scenarios.
-class AsIs implements MigrationSource {
-  AsIs(this._migrations);
+class MockSource implements MigrationSource {
+  MockSource({this.first, this.next});
 
-  final Iterable<Migration> _migrations;
+  Migration? first;
+  Migration? next;
 
-  /// Returns the migrations as-is, regardless of the version order.
-  /// Ignores [afterVersion] argument.
   @override
-  Stream<Migration> read({String? afterVersion}) =>
-      Stream.fromIterable(_migrations);
+  Future<Migration?> getFirst() async => first;
+
+  @override
+  Future<Migration?> getNext(String currentVersion) async => next;
 }

@@ -21,8 +21,16 @@ class TestGateway extends DatabaseGateway {
       : appliedMigrations.last.version;
 
   @override
-  Future<void> apply(Migration migration,
-      {String? assertCurrentVersion}) async {
+  Future<void> apply(Migration migration) async {
+    appliedMigrations.add(migration);
+  }
+
+  @override
+  Future<void> upgrade(
+      Migration migration, String expectedCurrentVersion) async {
+    if (await currentVersion() != expectedCurrentVersion) {
+      throw StateError('Db not at version ($expectedCurrentVersion)');
+    }
     appliedMigrations.add(migration);
   }
 }

@@ -1,9 +1,9 @@
 import 'package:migrant/src/migration.dart';
 
-/// A source of migration data.
-abstract class MigrationSource {
-  /// Streams the migrations ordered by version, ascending.
-  /// If [afterVersion] is provided, all migrations with versions less or
-  /// equal to it will be skipped.
-  Stream<Migration> read({String? afterVersion});
+abstract interface class MigrationSource {
+  /// Returns the first migration.
+  Future<Migration?> getFirst();
+
+  /// Returns the next migration after the [currentVersion].
+  Future<Migration?> getNext(String currentVersion);
 }
