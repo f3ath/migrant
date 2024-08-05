@@ -3,10 +3,7 @@ import 'package:migrant/src/migration.dart';
 
 /// A testing gateway instance.
 class TestGateway extends DatabaseGateway {
-  TestGateway({this.initialVersion});
-
-  /// Initial DB version.
-  final String? initialVersion;
+  TestGateway();
 
   /// All the applied migrations.
   final appliedMigrations = <Migration>[];
@@ -16,9 +13,8 @@ class TestGateway extends DatabaseGateway {
       appliedMigrations.map((e) => e.version).toList();
 
   @override
-  Future<String?> currentVersion() async => appliedMigrations.isEmpty
-      ? initialVersion
-      : appliedMigrations.last.version;
+  Future<String?> currentVersion() async =>
+      appliedMigrations.lastOrNull?.version;
 
   @override
   Future<void> apply(Migration migration) async {
@@ -28,9 +24,6 @@ class TestGateway extends DatabaseGateway {
   @override
   Future<void> upgrade(
       Migration migration, String expectedCurrentVersion) async {
-    if (await currentVersion() != expectedCurrentVersion) {
-      throw StateError('Db not at version ($expectedCurrentVersion)');
-    }
     appliedMigrations.add(migration);
   }
 }
