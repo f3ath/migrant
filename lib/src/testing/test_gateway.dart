@@ -17,13 +17,12 @@ class TestGateway extends DatabaseGateway {
       appliedMigrations.lastOrNull?.version;
 
   @override
-  Future<void> apply(Migration migration) async {
+  Future<void> initialize(Migration migration) async {
     appliedMigrations.add(migration);
   }
 
   @override
-  Future<void> upgrade(
-      Migration migration, String expectedCurrentVersion) async {
+  Future<void> upgrade(String fromVersion, Migration migration) async {
     appliedMigrations.add(migration);
   }
 }

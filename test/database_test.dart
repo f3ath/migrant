@@ -4,32 +4,39 @@ import 'package:test/test.dart';
 
 Future<void> main() async {
   group('Database', () {
-    final source = InMemory([
-      Migration('01', ''),
-      Migration('02', ''),
-      Migration('03', ''),
-    ]);
+    final migrations = [
+      Migration('01', []),
+      Migration('02', []),
+      Migration('03', []),
+    ];
+    final source = InMemory(migrations);
 
-    test('All migrations applied', () async {
+    test('applies all migrations', () async {
       final gateway = TestGateway();
       final database = Database(gateway);
-      await database.migrate(source);
-      expect(gateway.appliedVersions, equals(['01', '02', '03']));
+      await database.upgrade(source);
+      expect(gateway.appliedMigrations, equals(migrations));
     });
 
-    test('Can start from current version', () async {
-      final gateway = TestGateway()..appliedMigrations.add(Migration('01', ''));
+    test('starts from the current version', () async {
+      final gateway = TestGateway()..appliedMigrations.add(Migration('01', []));
       final database = Database(gateway);
-      await database.migrate(source);
-      expect(gateway.appliedVersions, equals(['01', '02', '03']));
+      await database.upgrade(source);
+      expect(gateway.appliedMigrations, equals(migrations));
+    });
+
+    test('noop when all migrations are already applied', () async {
+      final gateway = TestGateway()..appliedMigrations.addAll(migrations);
+      final database = Database(gateway);
+      await database.upgrade(source);
+      expect(gateway.appliedMigrations, equals(migrations));
     });
 
     test('Throws when migrations come out of order', () async {
       final database = Database(TestGateway());
       expect(() async {
-        await database.migrate(MockSource(
-            first: Migration('02', 'Version 02'),
-            next: Migration('01', 'Version 01')));
+        await database.upgrade(
+            MockSource(first: Migration('02', []), next: Migration('01', [])));
       }, throwsStateError);
     });
   });

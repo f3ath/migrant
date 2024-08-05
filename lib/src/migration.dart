@@ -1,10 +1,10 @@
 /// An atomic migration.
 class Migration {
-  const Migration(this.version, this.statement);
+  Migration(this.version, this.statements);
 
   /// The migration version.
   final String version;
 
-  /// The statement to execute.
-  final String statement;
+  /// The statements to execute.
+  final List<String> statements;
 }
