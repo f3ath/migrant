@@ -8,10 +8,6 @@ class TestGateway extends DatabaseGateway {
   /// All the applied migrations.
   final appliedMigrations = <Migration>[];
 
-  /// All applied migration versions.
-  List<String> get appliedVersions =>
-      appliedMigrations.map((e) => e.version).toList();
-
   @override
   Future<String?> currentVersion() async =>
       appliedMigrations.lastOrNull?.version;
