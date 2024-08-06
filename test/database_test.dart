@@ -19,7 +19,7 @@ Future<void> main() async {
     });
 
     test('starts from the current version', () async {
-      final gateway = TestGateway()..appliedMigrations.add(Migration('01', []));
+      final gateway = TestGateway()..appliedMigrations.add(migrations.first);
       final database = Database(gateway);
       await database.upgrade(source);
       expect(gateway.appliedMigrations, equals(migrations));
