@@ -6,18 +6,13 @@ import 'package:migrant/src/migration_source.dart';
 class InMemory implements MigrationSource {
   InMemory(this._migrations);
 
-  /// Creates a new instance from the version-to-migration map.
-  InMemory.fromMap(Map<String, String> versionToMigration)
-      : this(versionToMigration.entries
-            .map((it) => Migration(it.key, it.value))
-            .toList()
-          ..sort((a, b) => a.version.compareTo(b.version)));
-
   final List<Migration> _migrations;
 
   @override
-  Stream<Migration> read({String? afterVersion}) =>
-      Stream.fromIterable(_migrations.where((migration) =>
-          afterVersion == null ||
-          migration.version.compareTo(afterVersion) > 0));
+  Future<Migration?> getFirst() async => _migrations.firstOrNull;
+
+  @override
+  Future<Migration?> getNext(String currentVersion) async => _migrations
+      .where((m) => m.version.compareTo(currentVersion) > 0)
+      .firstOrNull;
 }
