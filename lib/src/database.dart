@@ -12,17 +12,15 @@ class Database {
   /// Error handling is the responsibility of the caller.
   Future<void> upgrade(MigrationSource source) async {
     while (true) {
-      final currentVersion = await _gateway.currentVersion();
-      if (currentVersion == null) {
-        final migration = await source.getFirst();
-        if (migration == null) break;
-        await _gateway.initialize(migration);
+      final current = await _gateway.currentVersion();
+      if (current == null) {
+        await _gateway.initialize(await source.getInitial());
         continue;
       }
-      final migration = await source.getNext(currentVersion);
+      final migration = await source.getNext(current);
       if (migration == null) break;
-      migration.version.assertHigherThan(currentVersion);
-      await _gateway.upgrade(currentVersion, migration);
+      migration.version.assertHigherThan(current);
+      await _gateway.upgrade(current, migration);
     }
   }
 }

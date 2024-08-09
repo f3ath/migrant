@@ -9,7 +9,7 @@ class InMemory implements MigrationSource {
   final List<Migration> _migrations;
 
   @override
-  Future<Migration?> getFirst() async => _migrations.firstOrNull;
+  Future<Migration> getInitial() async => _migrations.first;
 
   @override
   Future<Migration?> getNext(String currentVersion) async => _migrations

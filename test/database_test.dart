@@ -36,7 +36,7 @@ Future<void> main() async {
       final database = Database(TestGateway());
       expect(() async {
         await database.upgrade(
-            MockSource(first: Migration('02', []), next: Migration('01', [])));
+            MockSource(Migration('02', []), next: Migration('01', [])));
       }, throwsStateError);
     });
   });
