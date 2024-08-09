@@ -1,3 +1,7 @@
+## [0.3.0] - 2024-08-08
+### Changed
+- API
+
 ## [0.2.0] - 2024-08-05
 ### Changed
 - API
@@ -40,6 +44,7 @@
 ### Added
 - Initial version
 
+[0.3.0]: https://github.com/f3ath/migrant/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/f3ath/migrant/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/f3ath/migrant/compare/0.0.9...0.1.0
 [0.0.9]: https://github.com/f3ath/migrant/compare/0.0.8...0.0.9
