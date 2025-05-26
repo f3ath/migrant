@@ -26,7 +26,7 @@ class Database {
 }
 
 extension on String {
-  assertHigherThan(String other) {
+  assertHigherThan(String other) void {
     if (compareTo(other) <= 0) {
       throw StateError('Version "$this" must be higher than "$other"');
     }
